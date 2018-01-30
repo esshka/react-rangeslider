@@ -1,9 +1,9 @@
 /* eslint no-debugger: "warn" */
-import cx from "classnames"
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import ResizeObserver from "resize-observer-polyfill"
-import { capitalize, clamp } from "./utils"
+import cx from 'classnames'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import ResizeObserver from 'resize-observer-polyfill'
+import { capitalize, clamp } from './utils'
 
 /**
  * Predefined constants
@@ -12,16 +12,16 @@ import { capitalize, clamp } from "./utils"
 const constants = {
   orientation: {
     horizontal: {
-      dimension: "width",
-      direction: "left",
-      reverseDirection: "right",
-      coordinate: "x"
+      dimension: 'width',
+      direction: 'left',
+      reverseDirection: 'right',
+      coordinate: 'x'
     },
     vertical: {
-      dimension: "height",
-      direction: "top",
-      reverseDirection: "bottom",
-      coordinate: "y"
+      dimension: 'height',
+      direction: 'top',
+      reverseDirection: 'bottom',
+      coordinate: 'y'
     }
   }
 }
@@ -48,15 +48,15 @@ class Slider extends Component {
     max: 100,
     step: 1,
     value: 0,
-    orientation: "horizontal",
+    orientation: 'horizontal',
     tooltip: true,
     alwaysTooltip: false,
     reverse: false,
     labels: {},
-    handleLabel: ""
+    handleLabel: ''
   }
 
-  constructor(props, context) {
+  constructor (props, context) {
     super(props, context)
 
     this.state = {
@@ -66,7 +66,7 @@ class Slider extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.handleUpdate()
     const resizeObserver = new ResizeObserver(this.handleUpdate)
     resizeObserver.observe(this.slider)
@@ -108,8 +108,8 @@ class Slider extends Component {
    */
   handleStart = e => {
     const { onChangeStart } = this.props
-    document.addEventListener("mousemove", this.handleDrag)
-    document.addEventListener("mouseup", this.handleEnd)
+    document.addEventListener('mousemove', this.handleDrag)
+    document.addEventListener('mouseup', this.handleEnd)
     this.setState(
       {
         active: true
@@ -129,13 +129,13 @@ class Slider extends Component {
     e.stopPropagation()
     const { onChange } = this.props
     const { target: { className, classList, dataset } } = e
-    if (!onChange || className === "rangeslider__labels") return
+    if (!onChange || className === 'rangeslider__labels') return
 
     let value = this.position(e)
 
     if (
       classList &&
-      classList.contains("rangeslider__label-item") &&
+      classList.contains('rangeslider__label-item') &&
       dataset.value
     ) {
       value = parseFloat(dataset.value)
@@ -158,8 +158,8 @@ class Slider extends Component {
         onChangeComplete && onChangeComplete(e)
       }
     )
-    document.removeEventListener("mousemove", this.handleDrag)
-    document.removeEventListener("mouseup", this.handleEnd)
+    document.removeEventListener('mousemove', this.handleDrag)
+    document.removeEventListener('mouseup', this.handleEnd)
   }
 
   /**
@@ -213,7 +213,7 @@ class Slider extends Component {
     const { orientation, min, max, step } = this.props
     const percentage = clamp(pos, 0, limit) / (limit || 1)
     const baseVal = step * Math.round(percentage * (max - min) / step)
-    const value = orientation === "horizontal" ? baseVal + min : max - baseVal
+    const value = orientation === 'horizontal' ? baseVal + min : max - baseVal
 
     return clamp(value, min, max)
   }
@@ -255,8 +255,8 @@ class Slider extends Component {
     const { orientation } = this.props
     const value = this.getValueFromPosition(pos)
     const position = this.getPositionFromValue(value)
-    const handlePos = orientation === "horizontal" ? position + grab : position
-    const fillPos = orientation === "horizontal" ? handlePos : limit - handlePos
+    const handlePos = orientation === 'horizontal' ? position + grab : position
+    const fillPos = orientation === 'horizontal' ? handlePos : limit - handlePos
 
     return {
       fill: fillPos,
@@ -270,13 +270,13 @@ class Slider extends Component {
       ref={sl => {
         this.labels = sl
       }}
-      className={cx("rangeslider__labels")}
+      className={cx('rangeslider__labels')}
     >
       {labels}
     </ul>
   )
 
-  render() {
+  render () {
     const {
       value,
       orientation,
@@ -314,7 +314,7 @@ class Slider extends Component {
         labelItems.push(
           <li
             key={key}
-            className={cx("rangeslider__label-item")}
+            className={cx('rangeslider__label-item')}
             data-value={key}
             onMouseDown={this.handleDrag}
             onTouchStart={this.handleStart}
@@ -333,9 +333,9 @@ class Slider extends Component {
           this.slider = s
         }}
         className={cx(
-          "rangeslider",
+          'rangeslider',
           `rangeslider-${orientation}`,
-          { "rangeslider-reverse": reverse },
+          { 'rangeslider-reverse': reverse },
           className
         )}
         onMouseDown={this.handleDrag}
@@ -347,12 +347,12 @@ class Slider extends Component {
         aria-valuenow={value}
         aria-orientation={orientation}
       >
-        <div className="rangeslider__fill" style={fillStyle} />
+        <div className='rangeslider__fill' style={fillStyle} />
         <div
           ref={sh => {
             this.handle = sh
           }}
-          className="rangeslider__handle"
+          className='rangeslider__handle'
           onMouseDown={this.handleStart}
           onTouchMove={this.handleDrag}
           onTouchEnd={this.handleEnd}
@@ -365,12 +365,12 @@ class Slider extends Component {
               ref={st => {
                 this.tooltip = st
               }}
-              className="rangeslider__handle-tooltip"
+              className='rangeslider__handle-tooltip'
             >
               <span>{this.handleFormat(value)}</span>
             </div>
           ) : null}
-          <div className="rangeslider__handle-label">{handleLabel}</div>
+          <div className='rangeslider__handle-label'>{handleLabel}</div>
         </div>
         {labels ? this.renderLabels(labelItems) : null}
       </div>
